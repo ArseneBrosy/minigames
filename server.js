@@ -6,7 +6,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*", // pour tests, accepte toutes origines (à sécuriser en prod)
+    origin: "*", // TODO : change that
     methods: ["GET", "POST"]
   }
 });
