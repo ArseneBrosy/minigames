@@ -15,6 +15,8 @@ let waitingPlayer = null;
 let roomIdCounter = 1;
 let publicRoomName = `public-${roomIdCounter++}`;
 
+const rooms = {};
+
 io.on('connection', (socket) => {
   socket.on('playerConnected', (attributes) => {
     console.log('Player connected :', socket.id, attributes);
@@ -30,6 +32,23 @@ io.on('connection', (socket) => {
     const clients = io.sockets.adapter.rooms.get(roomName);
     socket.join(roomName);
 
+    // Initialize the room
+    if (!rooms[roomName]) {
+      rooms[roomName] = {
+        createdAt: Date.now(),
+        players: [],
+        status: 'waiting',
+        results: [0, 0, 0, 0, 0, 0, 0],
+        game: null,
+        gameState: {}
+      };
+    }
+
+    // Add the player to the room's object
+    rooms[roomName].players.push({
+      id: socket.id
+    });
+
     // check if it's the first player in it's room
     if (!clients) {
       if (!privateRoom) {
@@ -41,15 +60,31 @@ io.on('connection', (socket) => {
       console.log(`Room ${roomName} started`);
 
       // Notifiy both players
-      const firstId = clients.values().next().value;
-      io.sockets.sockets.get(firstId).emit('startGame', { room: roomName, player: 1 });
-      socket.emit('startGame', { room: roomName, player: 2 });
+      const master = io.sockets.sockets.get(rooms[roomName].players[0].id);
+      master.emit('roomFull', { room: roomName, player: 1 });
+      socket.emit('roomFull', { room: roomName, player: 2 });
+      rooms[roomName].status = 'full';
 
       // reset for next public room
       if (!privateRoom) {
         waitingPlayer = null;
         publicRoomName = `public-${roomIdCounter++}`;
       }
+
+      // start the game
+      master.on('startGame', () => {
+        const gameId = 0;
+        io.to(roomName).emit('gameResult', { nextGameId: gameId, results: rooms[roomName].results });
+        rooms[roomName].status = 'game-result';
+        rooms[roomName].game = gameId;
+        rooms[roomName].gameState = {};
+
+        // start the game in 5 seconds
+        setTimeout(() => {
+          io.to(roomName).emit('nextGame');
+          rooms[roomName].status = 'game';
+        }, 5000);
+      });
     }
   });
 
