@@ -26,6 +26,7 @@ io.on('connection', (socket) => {
       roomName = `private-${attributes.roomId}`
     }
 
+    // Add the player to the room
     const clients = io.sockets.adapter.rooms.get(roomName);
     socket.join(roomName);
 
