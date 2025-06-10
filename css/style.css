@@ -5,7 +5,9 @@
     font-family: "Bubblegum Sans", Inter, sans-serif;
 
     /* VARIABLES */
-    --col1:
+    --main-col: #7a7aff;
+    --col1: #cd1aff;
+    --col2: #217a00;
 }
 
 a, button {

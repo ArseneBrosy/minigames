@@ -7,4 +7,4 @@ function generateCode(length = 5) {
   return code;
 }
 
-document.querySelector('#private-lobby-button').href = `/game.html?room=${generateCode()}`;
+document.querySelector('#private-lobby-button').href = `./game.html?room=${generateCode()}`;
