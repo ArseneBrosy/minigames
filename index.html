@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Minigames</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/home.css">
 </head>
 <body>
     <h1>Minigames</h1>
-    <a href="./game.html">Chercher un adversaire</a>
-    <a id="private-lobby-button">Lobby privé</a>
-    <label for="lobby-id">Rejoindre un lobby privé</label>
-    <input id="lobby-id" type="text">
+    <div id="menu">
+        <div id="profile-picture"></div>
+        <input type="text" id="pseudo" placeholder="Pseudo">
+        <a href="./game.html">Chercher un adversaire</a>
+        <a id="private-lobby-button">Lobby privé</a>
+    </div>
 
     <!-- SCRIPTS -->
     <script src="/js/home.js"></script>
