@@ -2,7 +2,6 @@ body {
     display: flex;
     align-items: center;
     flex-direction: column;
-    background-color: #e4fafd;
 }
 
 #menus {
@@ -12,6 +11,7 @@ body {
     right: 0;
     bottom: 0;
     justify-content: center;
+    align-items: end;
 }
 
 .menu {
@@ -139,6 +139,28 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: white;
+}
+
+#profile {
+    height: fit-content;
+    padding: 30px;
+}
+
+#pseudo {
+    outline: none;
+    border: 2px solid #717171;
+    border-radius: 5px;
+    padding: 5px 20px;
+    font-size: 1rem;
+    margin-top: 20px;
+    width: 150px;
+    text-align: center;
+}
+
+#profile-picture {
+    border: 1px solid red;
+    aspect-ratio: 1;
+    width: 100%;
 }
 
 @keyframes menu-enter {

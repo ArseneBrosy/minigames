@@ -12,6 +12,7 @@ a, button {
 
 body {
     overflow: hidden;
+    background: linear-gradient(135deg, #e3fcff, #e3ffe4) no-repeat fixed;
 }
 
 .material-symbols-outlined {
