@@ -23,7 +23,7 @@ function codeInputAction(input) {
           document.querySelectorAll("#code input")[2].value +
           document.querySelectorAll("#code input")[3].value +
           document.querySelectorAll("#code input")[4].value;
-      console.log(value);
+      window.location.href = `./game.html?room=${value}`;
     }
   }
   if (key === "BACKSPACE") {
@@ -37,6 +37,10 @@ function codeInputAction(input) {
     }
   }
 }
+
+document.querySelector("#randomize").addEventListener('click', () => {
+  document.querySelector("#profile-picture").style.backgroundImage = `url('../src/images/profile${Math.floor(Math.random() * 4)}.png')`;
+});
 
 document.querySelector('#private-lobby-button').href = `./game.html?room=${generateCode()}`;
 document.querySelector('#open-private-lobby-menu').addEventListener('click', () => {

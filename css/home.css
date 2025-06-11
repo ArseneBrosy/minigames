@@ -159,9 +159,24 @@ body {
 }
 
 #profile-picture {
-    border: 1px solid red;
     aspect-ratio: 1;
     width: 100%;
+    background: url("../src/images/profile0.png");
+    background-size: 100%;
+    position: relative;
+}
+
+#randomize {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    aspect-ratio: 1;
+    background-color: #d52929;
+    color: white;
+    border-radius: 50%;
+    border: 2px solid black;
+    display: flex;
+    align-items: center;
 }
 
 @keyframes menu-enter {
