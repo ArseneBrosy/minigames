@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Minigames</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=close" />
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/home.css">
 </head>
@@ -14,7 +15,7 @@
             <input type="text" id="pseudo" placeholder="Pseudo">
         </div>
         <div class="main menu">
-            <a class="button">Lobby privé</a>
+            <button class="button" id="open-private-lobby-menu">Lobby privé</button>
             <a class="button" href="./game.html">Trouver un adversaire</a>
             <div id="private-lobby-menu" class="menu menu-closed">
                 <a id="private-lobby-button" class="button">Créer un loby</a>
@@ -29,6 +30,9 @@
                     <input type="text" placeholder="X" maxlength="1" onkeydown="codeInputAction(4)">
                 </div>
                 <p>Entrer un code</p>
+                <button id="close-private-lobby-menu">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
             </div>
         </div>
     </div>

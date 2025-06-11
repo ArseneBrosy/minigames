@@ -71,6 +71,16 @@ body {
     padding: 100px 200px 50px 200px;
     display: flex;
     flex-direction: column;
+    transition: 200ms ease-out;
+}
+
+#close-private-lobby-menu {
+    position: absolute;
+    padding: 5px;
+    background-color: transparent;
+    left: 30px;
+    top: 30px;
+    scale: 1.5;
 }
 
 #code {
