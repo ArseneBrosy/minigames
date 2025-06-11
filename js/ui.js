@@ -1,4 +1,9 @@
-function openMenu(menu) {
+function openMenu(menu, container = false) {
+  if (container) {
+    document.querySelectorAll('.menu.container .menu').forEach(menu => {
+      menu.classList.remove('menu-closed');
+    });
+  }
   document.querySelector(`#${menu}`).classList.remove('menu-closed');
 }
 

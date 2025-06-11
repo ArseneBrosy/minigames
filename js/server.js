@@ -8,20 +8,20 @@ socket.on('connect', () => {
 });
 
 socket.on('waiting', () => {
-  document.getElementById('status').innerText = 'En attente d\'un adversaire';
+  openMenu('waiting-menu');
+  console.log('waiting');
 });
 
-socket.on('roomFull', ({ room, player }) => {
-  document.getElementById('status').innerText = `Jeu démarré dans la room "${room}" en tant que Joueur ${player}`;
+socket.on('roomFull', ({ room, master }) => {
+  /*document.getElementById('status').innerText = `Jeu démarré dans la room "${room}" en tant que Joueur ${player}`;
   if (player === 1) {
     document.querySelector('#start-button').style.display = 'unset';
-  }
+  }*/
+  console.log(`roomFull. room : ${room}, master: ${master}`);
 });
 
 socket.on('gameResult', ({ nextGameId, results }) => {
-  document.querySelector('#lobby').style.display = 'none';
-  document.querySelector('#game-result').style.display = 'unset';
-  document.querySelector('#game').style.display = 'none';
+  openMenu('game-result-menu', true);
   document.querySelector('#next-game-id').innerText = `next game id : ${nextGameId}`;
 
   // start the timer
@@ -33,8 +33,7 @@ socket.on('gameResult', ({ nextGameId, results }) => {
 });
 
 socket.on('nextGame', () => {
-  document.querySelector('#game-result').style.display = 'none';
-  document.querySelector('#game').style.display = 'unset';
+  openMenu('game-menu', true);
 
   // reset timer
   clearInterval(nextGameTimerInterval);

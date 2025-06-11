@@ -1,0 +1,29 @@
+#players {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 150px;
+    margin-bottom: 30px;
+}
+
+.menu .menu {
+    padding: 100px 100px 50px 100px !important;
+}
+
+#players > div {
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.25);
+    padding: 25px;
+    border-radius: 10px;
+}
+
+.profile-picture {
+    aspect-ratio: 1;
+    width: 100%;
+    background: url("../src/images/profile0.png");
+    background-size: 100%;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.pseudo {
+    font-size: 1.3rem;
+}

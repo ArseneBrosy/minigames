@@ -13,6 +13,9 @@ a, button {
 body {
     overflow: hidden;
     background: linear-gradient(135deg, #e3fcff, #e3ffe4) no-repeat fixed;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
 #menus {
@@ -42,6 +45,7 @@ body {
     margin: 10px 0;
     box-shadow: inset 0 -10px rgba(0, 0, 0, 0.25);
     transition: 50ms;
+    text-decoration: none;
 }
 
 .button:hover {
@@ -71,6 +75,16 @@ body {
     display: flex;
     flex-direction: column;
     transition: 200ms ease-out;
+}
+
+.menu.container {
+    width: 100%;
+}
+
+.menu.container .menu {
+    left: 50%;
+    right: unset;
+    transform: translateX(-50%);
 }
 
 .separator {
