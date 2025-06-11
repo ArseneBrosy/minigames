@@ -9,13 +9,25 @@
 <body>
     <h1>Minigames</h1>
     <div id="menus">
-        <div id="profile">
+        <div id="profile" class="menu">
             <div id="profile-picture"></div>
             <input type="text" id="pseudo" placeholder="Pseudo">
         </div>
-        <div class="main">
-            <a id="private-lobby-button" class="button">Lobby privé</a>
+        <div class="main menu">
+            <a class="button">Lobby privé</a>
             <a class="button" href="./game.html">Trouver un adversaire</a>
+            <div id="private-lobby-menu" class="menu menu-closed">
+                <a id="private-lobby-button" class="button">Créer un loby</a>
+                <hr>
+                <div id="code">
+                    <input type="text" placeholder="X" maxlength="1" onkeydown="codeInputAction(0)">
+                    <input type="text" placeholder="X" maxlength="1" onkeydown="codeInputAction(1)">
+                    <input type="text" placeholder="X" maxlength="1" onkeydown="codeInputAction(2)">
+                    <input type="text" placeholder="X" maxlength="1" onkeydown="codeInputAction(3)">
+                    <input type="text" placeholder="X" maxlength="1" onkeydown="codeInputAction(4)">
+                </div>
+                <p>Entrer un code</p>
+            </div>
         </div>
     </div>
 

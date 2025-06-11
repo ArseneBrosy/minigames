@@ -14,7 +14,7 @@ body {
     justify-content: center;
 }
 
-#menus div {
+.menu {
     background-color: white;
     border-radius: 50px 50px 0 0;
     box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.25);
@@ -25,6 +25,8 @@ body {
     padding: 100px 200px 50px 200px;
     display: flex;
     flex-direction: column;
+    animation: menu-enter 200ms ease-out;
+    position: relative;
 }
 
 .main a {
@@ -40,4 +42,75 @@ body {
     font-size: 2rem;
     margin: 10px 0;
     box-shadow: inset 0 -10px rgba(0, 0, 0, 0.25);
+    transition: 50ms;
+}
+
+.button:hover {
+    box-shadow: inset 0 -7px rgba(0, 0, 0, 0.25);
+    padding-bottom: 12px;
+    margin-top: 13px;
+}
+
+.button:active {
+    box-shadow: inset 0 -2px rgba(0, 0, 0, 0.25);
+    padding-bottom: 7px;
+    margin-top: 18px;
+}
+
+.menu-closed {
+
+}
+
+#private-lobby-menu {
+    position: absolute;
+    margin: 0 !important;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    padding: 100px 200px 50px 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+#code {
+    display: flex;
+}
+
+#code input {
+    width: 100%;
+    margin: 0 10px;
+    text-align: center;
+    outline: none;
+    font-size: 2rem;
+    padding: 10px 0;
+    border: 3px solid #717171;
+    border-radius: 10px;
+    text-transform: uppercase;
+    user-select: all;
+}
+
+#code input.filled {
+    border-color: black;
+}
+
+#code input:focus {
+    border-color: #467cfd;
+}
+
+#code input:first-child {
+    margin-left: 0;
+}
+
+#code input:last-child {
+    margin-right: 0;
+}
+
+@keyframes menu-enter {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
 }
