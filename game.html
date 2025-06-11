@@ -6,22 +6,25 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div id="lobby">
-        <h1>Lobby</h1>
-        <p id="status"></p>
-        <button id="start-button" style="display: none" onclick="socket.emit('startGame')">Start Game</button>
+    <div id="menus">
+        <div id="public-lobby" class="menu">
+            <h1>Recherche d'un adversaire</h1>
+            <p id="status"></p>
+            <button id="start-button" style="display: none" onclick="socket.emit('startGame')">Start Game</button>
+        </div>
+        <div id="game-result" class="menu menu-closed" style="display: none">
+            <h1>Game Result</h1>
+            <p id="next-game-id"></p>
+            <p id="next-game-timer"></p>
+        </div>
+        <div id="game" style="display: none" class="menu menu-closed">
+            <h1>Game</h1>
+        </div>
+    </div>
 
-        <!-- SCRIPTS -->
-        <script src="http://172.232.41.124:3000/socket.io/socket.io.js"></script>
-        <script src="/js/server.js"></script>
-    </div>
-    <div id="game-result" style="display: none">
-        <h1>Game Result</h1>
-        <p id="next-game-id"></p>
-        <p id="next-game-timer"></p>
-    </div>
-    <div id="game" style="display: none">
-        <h1>Game</h1>
-    </div>
+    <!-- SCRIPTS -->
+    <script src="http://172.232.41.124:3000/socket.io/socket.io.js"></script>
+    <script src="/js/server.js"></script>
+    <script src="/js/ui.js"></script>
 </body>
 </html>

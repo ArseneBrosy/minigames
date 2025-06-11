@@ -41,11 +41,3 @@ function codeInputAction(input) {
 document.querySelector("#randomize").addEventListener('click', () => {
   document.querySelector("#profile-picture").style.backgroundImage = `url('../src/images/profile${Math.floor(Math.random() * 4)}.png')`;
 });
-
-document.querySelector('#private-lobby-button').href = `./game.html?room=${generateCode()}`;
-document.querySelector('#open-private-lobby-menu').addEventListener('click', () => {
-  document.querySelector('#private-lobby-menu').classList.remove('menu-closed');
-});
-document.querySelector('#close-private-lobby-menu').addEventListener('click', () => {
-  document.querySelector('#private-lobby-menu').classList.add('menu-closed');
-});
