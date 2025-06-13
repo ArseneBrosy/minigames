@@ -42,11 +42,11 @@ io.on('connection', (socket) => {
       const room = games.setNextGame(roomName);
       io.to(roomName).emit('gameResult', { nextGameId: room.game, results: room.results });
 
-      /* start the game in 5 seconds
+      // start the game in 5 seconds
       setTimeout(() => {
         io.to(roomName).emit('nextGame');
-        rooms[roomName].status = 'game';
-      }, 5000);*/
+        room.status = 'game';
+      }, 5000);
     }
   });
 
