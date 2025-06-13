@@ -2,6 +2,7 @@ const socket = io("http://172.232.41.124:3000");
 const params = new URLSearchParams(window.location.search);
 let nextGameTimer = 5;
 let nextGameTimerInterval = null;
+let publicRoom = true;
 
 socket.on('connect', () => {
   socket.emit('playerConnected', { roomId : params.has('room') ? params.get('room') : null });
@@ -13,11 +14,15 @@ socket.on('waiting', () => {
 });
 
 socket.on('roomFull', ({ room, master }) => {
-  /*document.getElementById('status').innerText = `Jeu démarré dans la room "${room}" en tant que Joueur ${player}`;
-  if (player === 1) {
-    document.querySelector('#start-button').style.display = 'unset';
-  }*/
   console.log(`roomFull. room : ${room}, master: ${master}`);
+
+  // if it's a public room, hide the give up button and start the game automatically
+  if (publicRoom) {
+    document.querySelector('#giveup-button').style.display = 'none';
+    setTimeout(() => {
+      socket.emit('startGame');
+    }, 3000);
+  }
 });
 
 socket.on('gameResult', ({ nextGameId, results }) => {
@@ -27,7 +32,9 @@ socket.on('gameResult', ({ nextGameId, results }) => {
   // start the timer
   document.querySelector('#next-game-timer').innerText = nextGameTimer;
   nextGameTimerInterval = setInterval(() => {
+    if (nextGameTimer > 0) {
     nextGameTimer--;
+    }
     document.querySelector('#next-game-timer').innerText = nextGameTimer;
   }, 1000);
 });

@@ -7,6 +7,7 @@
 
 .menu .menu {
     padding: 100px 100px 50px 100px !important;
+    transition: 0ms !important;
 }
 
 #players > div {

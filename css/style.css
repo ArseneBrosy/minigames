@@ -65,6 +65,10 @@ body {
     box-shadow: none;
 }
 
+.menu.container .menu-closed {
+    transform: translate(-50%, 100%) !important;
+}
+
 .menu .menu {
     position: absolute;
     margin: 0 !important;
@@ -84,7 +88,7 @@ body {
 .menu.container .menu {
     left: 50%;
     right: unset;
-    transform: translateX(-50%);
+    transform: translate(-50%, 0);
 }
 
 .separator {
