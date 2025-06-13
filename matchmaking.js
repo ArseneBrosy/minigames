@@ -4,10 +4,21 @@ let publicRoomName = `public-${roomIdCounter++}`;
 
 const rooms = {};
 
+/**
+ * Get the room object of a room name
+ * @param room the room name
+ * @returns {*} the room object
+ */
 function getRoom(room) {
   return rooms[room];
 }
 
+/**
+ * Find a room for the player or create one
+ * @param playerId the ID of the player to place in a room
+ * @param attributes the attributes of the player
+ * @returns {*} the room of the player
+ */
 function addPlayer(playerId, attributes) {
   // Find the player's room
   let roomName = publicRoomName;
@@ -58,8 +69,13 @@ function addPlayer(playerId, attributes) {
   return rooms[roomName];
 }
 
+/**
+ * Get the room in wich a player is placed
+ * @param playerId the player's ID
+ * @returns {*|null} the room name of the player
+ */
 function getPlayerRoom(playerId) {
-  for (let room of rooms) {
+  for (let room of Object.values(rooms)) {
     for (let player of room.players) {
       if (player.id === playerId) {
         return room.name;
@@ -70,6 +86,10 @@ function getPlayerRoom(playerId) {
   return null;
 }
 
+/**
+ * Remove a player from the game
+ * @param playerId the player's ID
+ */
 function removePlayer(playerId) {
   if (waitingPlayer === playerId) {
     waitingPlayer = null;
@@ -79,5 +99,6 @@ function removePlayer(playerId) {
 module.exports = {
   addPlayer,
   removePlayer,
-  getRoom
+  getRoom,
+  getPlayerRoom
 }

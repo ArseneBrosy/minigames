@@ -1,12 +1,17 @@
 const matchmaking = require('./matchmaking');
 
-function startGame(roomName) {
+/**
+ * Set the next game for a room
+ * @param roomName the room's name
+ */
+function setNextGame(roomName) {
   const gameId = 0;
-  rooms[roomName].status = 'game-result';
-  rooms[roomName].game = gameId;
-  rooms[roomName].gameState = {};
+  const room = matchmaking.getRoom(roomName);
+  room.status = 'game-result';
+  room.game = gameId;
+  room.gameState = {};
 }
 
 module.exports = {
-  startGame
+  setNextGame
 }
