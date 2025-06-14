@@ -76,6 +76,10 @@ socket.on('gameResult', ({ nextGameId, results }) => {
   openMenu('game-result-menu', true);
 });
 
+socket.on('game-event', ({ name, value }) => {
+  console.log('game event :', name, value);
+});
+
 socket.on('nextGame', () => {
   openMenu('game-menu', true);
 
