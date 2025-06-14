@@ -83,3 +83,62 @@
 .link button:hover {
     scale: 1.05;
 }
+
+.result-bar {
+    width: 100%;
+    height: 25px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 35px;
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.result-bar::after {
+    content: "";
+    background: black;
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 3px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: -1;
+}
+
+.result-bar div {
+    border: 3px solid black;
+    height: 100%;
+    aspect-ratio: 1;
+    border-radius: 100%;
+    background-color: #979595;
+}
+
+.result-bar .res1 {
+    background-color: #bd1f1f;
+}
+
+.result-bar .res2 {
+    background-color: #1063ff;
+}
+
+#game-result-menu p {
+    font-size: 1.4rem;
+    margin: 0;
+    text-align: center;
+}
+
+#next-game-timer {
+    font-size: 4rem !important;
+}
+
+#next-game-image {
+    width: 80%;
+    aspect-ratio: 3 / 2;
+    border: 3px solid black;
+    border-radius: 10px;
+    margin: 40px 10% 0;
+    display: flex;
+    align-items: end;
+    justify-content: center;
+}

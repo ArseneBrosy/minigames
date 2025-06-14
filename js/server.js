@@ -57,8 +57,12 @@ socket.on('roomFull', ({ room, players }) => {
 });
 
 socket.on('gameResult', ({ nextGameId, results }) => {
-  openMenu('game-result-menu', true);
-  document.querySelector('#next-game-id').innerText = `next game id : ${nextGameId}`;
+  // set the results
+  let resultsHTML = '';
+  for (result of results) {
+    resultsHTML += `<div class="res${result}"></div>`
+  }
+  document.querySelector('.result-bar').innerHTML = resultsHTML;
 
   // start the timer
   document.querySelector('#next-game-timer').innerText = nextGameTimer;
@@ -68,6 +72,8 @@ socket.on('gameResult', ({ nextGameId, results }) => {
     }
     document.querySelector('#next-game-timer').innerText = nextGameTimer;
   }, 1000);
+
+  openMenu('game-result-menu', true);
 });
 
 socket.on('nextGame', () => {
