@@ -2,11 +2,21 @@ const params = new URLSearchParams(window.location.search);
 let nextGameTimer = 5;
 let nextGameTimerInterval = null;
 const publicRoom = !(params.has('room') || params.has('private'));
+let master = false;
 
 const socket = io("http://172.232.41.124:3000");
 
 socket.on('connect', () => {
-  socket.emit('playerConnected', { private : !publicRoom, roomId : params.has('room') ? params.get('room') : null });
+  socket.emit('playerConnected', {
+    private : !publicRoom,
+    roomId : params.has('room') ? params.get('room') : null,
+    pseudo : localStorage.getItem('pseudo'),
+    picture : localStorage.getItem('picture'),
+  });
+
+  // Set my pseudo
+  document.querySelector(`#${publicRoom ? '' : 'private-'}waiting-menu .pseudo`).innerText = localStorage.getItem('pseudo');
+  document.querySelector(`#${publicRoom ? '' : 'private-'}waiting-menu .profile-picture`).style = `background: url("../src/images/profile${localStorage.getItem('picture')}.png")`;
 });
 
 socket.on('waiting', ({ roomId }) => {
@@ -17,10 +27,11 @@ socket.on('waiting', ({ roomId }) => {
     document.querySelector('#invite').style.display = 'unset';
   }
   openMenu(`${publicRoom ? '' : 'private-'}waiting-menu`);
+  master = true;
 });
 
-socket.on('roomFull', ({ room, master }) => {
-  console.log(`roomFull. room : ${room}, master: ${master}`);
+socket.on('roomFull', ({ room, players }) => {
+  console.log(`roomFull. room : ${room}`);
   openMenu(`${publicRoom ? '' : 'private-'}waiting-menu`);
 
   // if it's a public room, hide the give up button and start the game automatically
@@ -35,6 +46,14 @@ socket.on('roomFull', ({ room, master }) => {
   else {
     document.querySelector('#start-game-button').classList.remove('off');
   }
+
+  // show the opponent
+  const opponentCard = document.querySelector(`#${publicRoom ? '' : 'private-'}waiting-menu .nobody`);
+  opponentCard.classList.remove('nobody');
+  opponentCard.innerHTML = `
+    <div class="profile-picture" style="background: url('../src/images/profile${players[master ? 1 : 0].picture}.png')"></div>
+    <div class="pseudo">${players[master ? 1 : 0].pseudo}</div>
+  `;
 });
 
 socket.on('gameResult', ({ nextGameId, results }) => {

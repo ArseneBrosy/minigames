@@ -1,12 +1,3 @@
-function generateCode(length = 5) {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let code = '';
-  for (let i = 0; i < length; i++) {
-    code += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return code;
-}
-
 function codeInputAction(input) {
   event.preventDefault();
 
@@ -38,6 +29,24 @@ function codeInputAction(input) {
   }
 }
 
+const picture = localStorage.getItem("picture");
+if (picture !== null) {
+  document.querySelector("#profile-picture").style.backgroundImage = `url('../src/images/profile${picture}.png')`;
+}
+
 document.querySelector("#randomize").addEventListener('click', () => {
-  document.querySelector("#profile-picture").style.backgroundImage = `url('../src/images/profile${Math.floor(Math.random() * 4)}.png')`;
+  const picture = Math.floor(Math.random() * 4);
+  document.querySelector("#profile-picture").style.backgroundImage = `url('../src/images/profile${picture}.png')`;
+  localStorage.setItem('picture', picture.toString());
+});
+
+const pseudo = localStorage.getItem("pseudo");
+if (pseudo !== null) {
+  document.querySelector('#pseudo').value = pseudo;
+}
+
+document.querySelector('#pseudo').addEventListener('input', (e) => {
+  if (e.target.value !== "") {
+    localStorage.setItem('pseudo', e.target.value);
+  }
 });
