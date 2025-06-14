@@ -1,7 +1,5 @@
-#players {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 150px;
+.players {
+    display: flex;
     margin-bottom: 30px;
 }
 
@@ -10,10 +8,16 @@
     transition: 0ms !important;
 }
 
-#players > div {
+.players > div {
     box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.25);
     padding: 25px;
     border-radius: 10px;
+    flex: 1;
+    min-width: 13rem;
+}
+
+.players > div:nth-child(2) {
+    margin-left: 150px;
 }
 
 .profile-picture {
@@ -27,4 +31,56 @@
 
 .pseudo {
     font-size: 1.3rem;
+    text-align: center;
+}
+
+.nobody {
+    background-color: black;
+}
+
+#private-invite-menu {
+    font-size: 1.5rem;
+    text-align: center;
+    transition: 200ms !important;
+    right: unset;
+}
+
+#private-invite-menu p {
+    margin: 0;
+}
+
+#private-code {
+    color: #467cfd;
+    font-size: 2rem;
+    margin-top: 10px;
+}
+
+.separator {
+    margin: 20px 0;
+}
+
+.link {
+    display: flex;
+    margin-top: 10px;
+}
+
+.link input {
+    width: 100%;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 0 10px;
+    font-size: 1rem;
+    margin-right: 10px;
+}
+
+.link button {
+    background: none;
+    border: 2px solid black;
+    padding: 5px 20px 2px;
+    border-radius: 100px;
+    transition: 100ms;
+}
+
+.link button:hover {
+    scale: 1.05;
 }

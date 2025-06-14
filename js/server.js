@@ -1,20 +1,27 @@
-const socket = io("http://172.232.41.124:3000");
 const params = new URLSearchParams(window.location.search);
 let nextGameTimer = 5;
 let nextGameTimerInterval = null;
-let publicRoom = true;
+const publicRoom = !(params.has('room') || params.has('private'));
+
+const socket = io("http://172.232.41.124:3000");
 
 socket.on('connect', () => {
-  socket.emit('playerConnected', { roomId : params.has('room') ? params.get('room') : null });
+  socket.emit('playerConnected', { private : !publicRoom, roomId : params.has('room') ? params.get('room') : null });
 });
 
-socket.on('waiting', () => {
-  openMenu('waiting-menu');
-  console.log('waiting');
+socket.on('waiting', ({ roomId }) => {
+  if (!publicRoom) {
+    document.querySelector('#private-code').innerText = roomId;
+    document.querySelector('#private-link').value = window.location.href.split('?')[0] + `?room=${roomId}`;
+    document.querySelector('#start-game-button').style.display = 'unset';
+    document.querySelector('#invite').style.display = 'unset';
+  }
+  openMenu(`${publicRoom ? '' : 'private-'}waiting-menu`);
 });
 
 socket.on('roomFull', ({ room, master }) => {
   console.log(`roomFull. room : ${room}, master: ${master}`);
+  openMenu(`${publicRoom ? '' : 'private-'}waiting-menu`);
 
   // if it's a public room, hide the give up button and start the game automatically
   if (publicRoom) {
@@ -22,6 +29,11 @@ socket.on('roomFull', ({ room, master }) => {
     setTimeout(() => {
       socket.emit('startGame');
     }, 3000);
+  }
+
+  // if it's a private room enable the start game button for the master
+  else {
+    document.querySelector('#start-game-button').classList.remove('off');
   }
 });
 
