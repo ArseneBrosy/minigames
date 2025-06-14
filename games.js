@@ -14,6 +14,11 @@ function setNextGame(roomName) {
   return room;
 }
 
+function applyInput(roomName, player, input) {
+  console.log(`input, roomName : ${roomName}, player : ${player}, input : ${input}`);
+}
+
 module.exports = {
-  setNextGame
+  setNextGame,
+  applyInput
 }

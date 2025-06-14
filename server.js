@@ -54,6 +54,20 @@ io.on('connection', (socket) => {
         }, 5000);
       }
     }
+
+    socket.on('input', (input) => {
+      // find the player's room
+      const roomName = matchmaking.getPlayerRoom(socket.id);
+      if (roomName) {
+        let room = matchmaking.getRoom(roomName);
+
+        // check that the room is in game
+        if (room.status === 'game') {
+          const playerIndex = room.players.findIndex(player => player.id === socket.id);
+          games.applyInput(roomName, playerIndex, input);
+        }
+      }
+    });
   });
 
   socket.on('disconnect', () => {
