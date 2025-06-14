@@ -5,6 +5,19 @@ let publicRoomName = `public-${roomIdCounter++}`;
 const rooms = {};
 
 /**
+ * Generate a random combinaison of 5 letters and numbers
+ * @returns {string} the random code
+ */
+function generateCode() {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let code = '';
+  for (let i = 0; i < 5; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return code;
+}
+
+/**
  * Get the room object of a room name
  * @param room the room name
  * @returns {*} the room object
@@ -22,9 +35,11 @@ function getRoom(room) {
 function addPlayer(playerId, attributes) {
   // Find the player's room
   let roomName = publicRoomName;
-  let privateRoom = attributes.roomId !== null;
+  const privateRoom = attributes.private;
   if (privateRoom) {
-    roomName = `private-${attributes.roomId}`
+    //get the room ID
+    const roomID = attributes.roomId !== null ? attributes.roomId : generateCode();
+    roomName = `private-${roomID}`
   }
 
   // Initialize the room if it doesn't exist
@@ -44,7 +59,9 @@ function addPlayer(playerId, attributes) {
 
   // Add the player to the room's object
   rooms[roomName].players.push({
-    id: playerId
+    id: playerId,
+    pseudo: attributes.pseudo,
+    picture: attributes.picture,
   });
 
   // check if it's the first player in it's room
@@ -55,6 +72,7 @@ function addPlayer(playerId, attributes) {
   } else {
     // Start the room
     console.log(`Room ${roomName} started`);
+    console.log(rooms[roomName]);
 
     // Set the room to full
     rooms[roomName].status = 'full';
@@ -93,6 +111,7 @@ function getPlayerRoom(playerId) {
 function removePlayer(playerId) {
   if (waitingPlayer === playerId) {
     waitingPlayer = null;
+    delete rooms[publicRoomName];
   }
 }
 

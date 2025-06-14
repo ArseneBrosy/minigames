@@ -25,28 +25,34 @@ io.on('connection', (socket) => {
 
     // send the player a message if he is the first one
     if (room.status === 'waiting') {
-      socket.emit('waiting');
+      const roomId = attributes.private ? room.name.slice(-5) : null;
+      socket.emit('waiting', { roomId : roomId });
     }
 
     // send players a message if the room is full
     if (room.status === 'full') {
-      io.to(room.name).emit('roomFull', { room: room.name, master: room.players[0].id });
+      io.to(room.name).emit('roomFull', { room: room.name, players: room.players });
     }
   });
-
 
   socket.on('startGame', () => {
     // find the player's room
     const roomName = matchmaking.getPlayerRoom(socket.id);
     if (roomName) {
-      const room = games.setNextGame(roomName);
-      io.to(roomName).emit('gameResult', { nextGameId: room.game, results: room.results });
+      let room = matchmaking.getRoom(roomName);
 
-      // start the game in 5 seconds
-      setTimeout(() => {
-        io.to(roomName).emit('nextGame');
-        room.status = 'game';
-      }, 5000);
+      // check that the room is full and that the master requested
+      if (room.status === 'full' && room.players[0].id === socket.id) {
+        room = games.setNextGame(roomName);
+
+        io.to(roomName).emit('gameResult', {nextGameId: room.game, results: room.results});
+
+        // start the game in 5 seconds
+        setTimeout(() => {
+          io.to(roomName).emit('nextGame');
+          room.status = 'game';
+        }, 5000);
+      }
     }
   });
 
