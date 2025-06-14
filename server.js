@@ -51,7 +51,7 @@ io.on('connection', (socket) => {
         // start the game in 5 seconds
         setTimeout(() => {
           io.to(roomName).emit('nextGame');
-          room.status = 'game';
+          games.launchGame(roomName);
         }, 5000);
       }
     }
@@ -77,7 +77,23 @@ io.on('connection', (socket) => {
 });
 
 eventBus.on('game-event', (content) => {
-  console.log("game event:", content);
+  io.to(content.room).emit('game-event', { name : content.name, value : content.value});
+});
+
+eventBus.on('game-end', (content) => {
+  const room = games.setNextGame(content.room);
+
+  // set the result
+  room.results[room.gameIndex] = content.winner + 1;
+  room.gameIndex++;
+
+  io.to(content.room).emit('gameResult', {nextGameId: room.game, results: room.results});
+
+  // start the game in 5 seconds
+  setTimeout(() => {
+    io.to(content.room).emit('nextGame');
+    games.launchGame(content.room);
+  }, 5000);
 });
 
 server.listen(3000, () => {

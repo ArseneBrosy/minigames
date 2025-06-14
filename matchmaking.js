@@ -51,6 +51,7 @@ function addPlayer(playerId, attributes) {
       name: roomName,
       players: [],
       status: 'waiting',
+      gameIndex: 0,
       results: [0, 0, 0, 0, 0, 0, 0],
       game: null,
       gameState: {}

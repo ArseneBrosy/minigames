@@ -9,7 +9,7 @@ const games = [
  * @returns {*} the new room's state
  */
 function setNextGame(roomName) {
-  const gameId = 0;
+  const gameId = Math.floor(Math.random() * games.length);
   const room = matchmaking.getRoom(roomName);
   room.status = 'game-result';
   room.game = gameId;
@@ -29,7 +29,19 @@ function applyInput(roomName, player, input) {
   games[gameId].applyInput(room, player, input);
 }
 
+/**
+ * Launch a game in a room
+ * @param roomName the room in wich the game should be launched
+ */
+function launchGame(roomName) {
+  const room = matchmaking.getRoom(roomName);
+  const gameId = room.game;
+  games[gameId].launchGame(room);
+  room.status = 'game';
+}
+
 module.exports = {
   setNextGame,
-  applyInput
+  applyInput,
+  launchGame,
 }
