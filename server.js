@@ -3,6 +3,7 @@ const http = require('http');
 const { Server } = require('socket.io');
 const matchmaking = require('./matchmaking');
 const games = require('./games');
+const eventBus = require('./eventBus');
 
 const app = express();
 const server = http.createServer(app);
@@ -73,6 +74,10 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     matchmaking.removePlayer(socket.id);
   });
+});
+
+eventBus.on('game-event', (content) => {
+  console.log("game event:", content);
 });
 
 server.listen(3000, () => {

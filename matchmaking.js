@@ -72,7 +72,6 @@ function addPlayer(playerId, attributes) {
   } else {
     // Start the room
     console.log(`Room ${roomName} started`);
-    console.log(rooms[roomName]);
 
     // Set the room to full
     rooms[roomName].status = 'full';

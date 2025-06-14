@@ -1,4 +1,7 @@
 const matchmaking = require('./matchmaking');
+const games = [
+  require('./games/buzzer.js')
+];
 
 /**
  * Set the next game for a room
@@ -14,8 +17,16 @@ function setNextGame(roomName) {
   return room;
 }
 
+/**
+ * Apply an input to the current game
+ * @param roomName the name of the room
+ * @param player the index of the player that sent the input
+ * @param input the input
+ */
 function applyInput(roomName, player, input) {
-  console.log(`input, roomName : ${roomName}, player : ${player}, input : ${input}`);
+  const room = matchmaking.getRoom(roomName);
+  const gameId = room.game;
+  games[gameId].applyInput(room, player, input);
 }
 
 module.exports = {
