@@ -2,6 +2,8 @@ const params = new URLSearchParams(window.location.search);
 const publicRoom = !(params.has('room') || params.has('private'));
 
 //region HTML Objects
+const pseudoText = document.querySelector(`#${publicRoom ? '' : 'private-'}waiting-menu .pseudo`);
+const profilePicture = document.querySelector(`#${publicRoom ? '' : 'private-'}waiting-menu .profile-picture`);
 const privateCodeText = document.querySelector('#private-code');
 const privateLinkText = document.querySelector('#private-link');
 const startGameButton = document.querySelector('#start-game-button');
@@ -12,6 +14,24 @@ const giveUpButton = document.querySelector('#giveup-button');
 //region variables
 let master = false;
 //endregion
+
+/**
+ * connect a player to the server
+ * @returns {{private: boolean, pseudo: string, roomId: (string|null), picture: string}} the player's attributes
+ */
+function connectPlayer() {
+  // Set my pseudo
+  pseudoText.innerText = localStorage.getItem('pseudo');
+  profilePicture.style = `background: url("../src/images/profile${localStorage.getItem('picture')}.png")`;
+
+  // return the player's attributes
+  return {
+    private : !publicRoom,
+    roomId : params.has('room') ? params.get('room') : null,
+    pseudo : localStorage.getItem('pseudo'),
+    picture : localStorage.getItem('picture'),
+  };
+}
 
 /**
  * Show the waiting for opponent menu
@@ -31,16 +51,14 @@ function showWaitingMenu(roomId) {
 /**
  * Show the full room menu
  * @param players the players in the room
+ * @returns {boolean} true if the room is a public room
  */
 function showFullMenu(players) {
   openMenu(`${publicRoom ? '' : 'private-'}waiting-menu`);
 
-  // if it's a public room, hide the give up button and start the game automatically
+  // if it's a public room, hide the give up button
   if (publicRoom) {
     giveUpButton.style.display = 'none';
-    setTimeout(() => {
-      socket.emit('startGame');
-    }, 3000);
   }
 
   // if it's a private room enable the start game button for the master
@@ -55,4 +73,8 @@ function showFullMenu(players) {
     <div class="profile-picture" style="background: url('../src/images/profile${players[master ? 1 : 0].picture}.png')"></div>
     <div class="pseudo">${players[master ? 1 : 0].pseudo}</div>
   `;
+
+  return publicRoom;
 }
+
+export { connectPlayer, showWaitingMenu, showFullMenu };

@@ -22,7 +22,7 @@ let currentGame = null;
 function showGameResults(results, nextGameId) {
   // set the results
   let resultsHTML = '';
-  for (result of results) {
+  for (let result of results) {
     resultsHTML += `<div class="res${result}"></div>`
   }
   resultBar.innerHTML = resultsHTML;
@@ -62,3 +62,5 @@ function startNextGame() {
 function gameEvent(name, value) {
   console.log('game event :', name, value);
 }
+
+export { showGameResults, startNextGame, gameEvent };
