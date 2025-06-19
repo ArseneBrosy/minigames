@@ -12,6 +12,9 @@ const GAME_NAMES = [
 const resultBar = document.querySelector('.result-bar');
 const nextGameName = document.querySelector('#next-game-name');
 const timerText = document.querySelector('#next-game-timer');
+const playerPoints = document.querySelector('#players-points');
+const canvas = document.querySelector('#game');
+const ctx = canvas.getContext('2d');
 //endregion
 
 //region VARIABLES
@@ -19,6 +22,9 @@ let nextGameTimer = 5;
 let nextGameTimerInterval = null;
 let currentGame = null;
 //endregion
+
+canvas.width = 1920;
+canvas.height = 1080;
 
 /**
  * Show the last game result
@@ -58,6 +64,9 @@ function startNextGame() {
   // reset timer
   clearInterval(nextGameTimerInterval);
   nextGameTimer = 5;
+
+  // start the game
+  gameModules[currentGame].startGame();
 }
 
 /**
@@ -77,4 +86,15 @@ function sendInput(input) {
   document.dispatchEvent(new CustomEvent('player-input', { detail: input }));
 }
 
-export { showGameResults, startNextGame, gameEvent, sendInput };
+/**
+ * Set the players points texts
+ * @param points the players points
+ */
+function setPoints(points) {
+  playerPoints.innerHTML = `
+  <p>${points[0]}</p>
+  <p>•</p>
+  <p>${points[1]}</p>`;
+}
+
+export { showGameResults, startNextGame, gameEvent, sendInput, setPoints, ctx };
