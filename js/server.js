@@ -34,9 +34,6 @@ socket.on('nextGame', () => {
   games.startNextGame();
 });
 
-document.addEventListener('keydown', (event) => {
-  if (event.key === ' ') {
-    console.log('emit');
-    socket.emit('input');
-  }
-})
+document.addEventListener('player-input', (e) => {
+  socket.emit('input', e.detail);
+});

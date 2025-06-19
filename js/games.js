@@ -1,3 +1,9 @@
+//region Game modules
+import * as buzzer from "./games/buzzer.js";
+
+const gameModules = [buzzer];
+//endregion
+
 const GAME_NAMES = [
   'Buzzer'
 ];
@@ -60,7 +66,15 @@ function startNextGame() {
  * @param value value of the event
  */
 function gameEvent(name, value) {
-  console.log('game event :', name, value);
+  gameModules[currentGame].gameEvent(name, value);
 }
 
-export { showGameResults, startNextGame, gameEvent };
+/**
+ * Send the server an input from the player
+ * @param input the input to send
+ */
+function sendInput(input) {
+  document.dispatchEvent(new CustomEvent('player-input', { detail: input }));
+}
+
+export { showGameResults, startNextGame, gameEvent, sendInput };
