@@ -32,7 +32,7 @@ io.on('connection', (socket) => {
 
     // send players a message if the room is full
     if (room.status === 'full') {
-      io.to(room.name).emit('roomFull', { room: room.name, players: room.players });
+      io.to(room.name).emit('roomFull', { players: room.players });
     }
   });
 
