@@ -46,7 +46,7 @@ io.on('connection', (socket) => {
       if (room.status === 'full' && room.players[0].id === socket.id) {
         room = games.setNextGame(roomName);
 
-        io.to(roomName).emit('gameResult', {nextGameId: room.game, results: room.results});
+        io.to(roomName).emit('gameResult', {nextGameId: room.game, results: room.results, winner: null, gameIndex: room.gameIndex});
 
         // start the game in 5 seconds
         setTimeout(() => {
@@ -87,13 +87,16 @@ eventBus.on('game-end', (content) => {
   room.results[room.gameIndex] = content.winner + 1;
   room.gameIndex++;
 
-  io.to(content.room).emit('gameResult', {nextGameId: room.game, results: room.results});
+  // find the winner name
+  const winner = room.players[content.winner].pseudo;
+
+  io.to(content.room).emit('gameResult', {nextGameId: room.game, results: room.results, winner: { id: content.winner, pseudo: winner }, gameIndex: room.gameIndex});
 
   // start the game in 5 seconds
   setTimeout(() => {
     io.to(content.room).emit('nextGame');
     games.launchGame(content.room);
-  }, 5000);
+  }, 7000);
 });
 
 server.listen(3000, () => {
