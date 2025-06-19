@@ -13,6 +13,7 @@ const resultBar = document.querySelector('.result-bar');
 const nextGameName = document.querySelector('#next-game-name');
 const timerText = document.querySelector('#next-game-timer');
 const playerPoints = document.querySelector('#players-points');
+const endGameScreen = document.querySelector('#end-game-screen');
 const canvas = document.querySelector('#game');
 const ctx = canvas.getContext('2d');
 //endregion
@@ -27,11 +28,26 @@ canvas.width = 1920;
 canvas.height = 1080;
 
 /**
+ * Show the end screen
+ * @param winner the name of the player who won the game
+ */
+function endGame(winner) {
+  endGameScreen.style.display = 'flex';
+  endGameScreen.innerHTML = `<p>${winner.pseudo} gagne</p>`;
+  endGameScreen.style.backgroundColor = winner.id === 0 ? '#bd1f1f' : '#1063ff';
+}
+
+/**
  * Show the last game result
  * @param results the result of the party
  * @param nextGameId the next game's id
  */
 function showGameResults(results, nextGameId) {
+  // reset the end game screen
+  endGameScreen.style.display = 'none';
+  endGameScreen.innerHTML = `<p></p>`;
+  endGameScreen.style.backgroundColor = 'unset';
+
   // set the results
   let resultsHTML = '';
   for (let result of results) {
@@ -97,4 +113,4 @@ function setPoints(points) {
   <p>${points[1]}</p>`;
 }
 
-export { showGameResults, startNextGame, gameEvent, sendInput, setPoints, ctx };
+export { showGameResults, startNextGame, endGame, gameEvent, sendInput, setPoints, ctx };

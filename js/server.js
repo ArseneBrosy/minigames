@@ -22,8 +22,13 @@ socket.on('roomFull', ({ players }) => {
   }
 });
 
-socket.on('gameResult', ({ nextGameId, results }) => {
-  games.showGameResults(results, nextGameId);
+socket.on('gameResult', ({ nextGameId, results, winner, gameIndex }) => {
+  if (gameIndex > 0) {
+    games.endGame(winner);
+  }
+  setTimeout(() => {
+    games.showGameResults(results, nextGameId);
+  }, gameIndex > 0 ? 2000 : 0);
 });
 
 socket.on('game-event', ({ name, value }) => {
