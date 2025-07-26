@@ -1,11 +1,11 @@
 //region Game modules
-import * as buzzer from "./games/buzzer.js";
+import * as lightFingers from "./games/light-fingers.js";
 
-const gameModules = [buzzer];
+const gameModules = [lightFingers];
 //endregion
 
 const GAME_NAMES = [
-  'Buzzer'
+  'Light fingers'
 ];
 
 //region HTML Objects
@@ -22,6 +22,7 @@ const ctx = canvas.getContext('2d');
 let nextGameTimer = 5;
 let nextGameTimerInterval = null;
 let currentGame = null;
+let gameLoop = null;
 //endregion
 
 canvas.width = 1920;
@@ -35,6 +36,7 @@ function endGame(winner) {
   endGameScreen.style.display = 'flex';
   endGameScreen.innerHTML = `<p>${winner.pseudo} gagne</p>`;
   endGameScreen.style.backgroundColor = winner.id === 0 ? '#bd1f1f' : '#1063ff';
+  clearInterval(gameLoop);
 }
 
 /**
@@ -83,6 +85,7 @@ function startNextGame() {
 
   // start the game
   gameModules[currentGame].startGame();
+  gameLoop = setInterval(gameModules[currentGame].drawFrame, 1);
 }
 
 /**
