@@ -1,6 +1,6 @@
 const matchmaking = require('./matchmaking');
 const games = [
-  require('./games/buzzer.js')
+  require('./games/lightFingers.js')
 ];
 
 /**

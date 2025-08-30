@@ -3,6 +3,9 @@ const MIN_TIME = 3000;
 const MAX_TIME = 10000;
 const HOLD_TIME = 2000;
 const WIN_POINTS = 5;
+const ACCEPT_INPUT_TIME = 500;
+
+let acceptInput = false;
 
 /**
  * Fonction that gets called everytime the player performs an input
@@ -19,6 +22,9 @@ function applyInput(room, player, input) {
   if (room.gameState.buzzerOn) {
     // reset the buzzer
     room.gameState.buzzerOn = false;
+    setTimeout(() => {
+      acceptInput = false;
+    }, ACCEPT_INPUT_TIME);
 
     // give the player a point
     room.gameState.points[player]++;
@@ -32,12 +38,14 @@ function applyInput(room, player, input) {
 
     // start the buzzer timer again
     startTimer(room);
+  } else if (acceptInput) {
+    event.emit(room.name, 'player-failed-accepted', player);
   } else {
     // put the player on hold
     room.gameState.playersOnHold[player] = true;
 
     // inform the players
-    event.emit(room.name, 'player-failed', player);
+    event.emit(room.name, 'player-failed', { player : player, time : HOLD_TIME });
 
     // countdown to activate the player back
     setTimeout(() => {
@@ -57,6 +65,7 @@ function launchGame(room) {
     playersOnHold: [false, false],
     points: [0, 0]
   }
+  acceptInput = false;
   console.log(`game launched in room: ${room.name}`);
   startTimer(room);
 }
@@ -68,6 +77,7 @@ function launchGame(room) {
 function startTimer(room) {
   setTimeout(() => {
     room.gameState.buzzerOn = true;
+    acceptInput = true;
     event.emit(room.name, 'buzzer-on');
   }, Math.floor(Math.random() * (MAX_TIME - MIN_TIME)) + MIN_TIME);
 }
