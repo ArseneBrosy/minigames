@@ -54,11 +54,12 @@ function gameEvent(name, value) {
     // animate hand
     const start = (value === 0) ? -HAND_OFF : 1920 + HAND_OFF - RIGHT_HAND_SPRITE.width;
     const middle = (value === 0) ? 0 : 1920 - RIGHT_HAND_SPRITE.width;
-    const diamondCenter = 1920 / 2 - DIAMOND_SPRITE.width / 2;
-    const diamondDirection = (value === 0) ? -1 : 1;
     animateHand(start, middle, HAND_TRAVEL_TIME, HAND_TRAVEL_TIME, value);
 
-    // diamond taken
+    // take diamond
+    const diamondCenter = 1920 / 2 - DIAMOND_SPRITE.width / 2;
+    const diamondDirection = (value === 0) ? -1 : 1;
+    diamondX = diamondCenter;
     setTimeout(() => {
       diamondTaken = true;
       diamondSize = 0;
@@ -79,6 +80,11 @@ function gameEvent(name, value) {
         }, 200);
       });
     }, HAND_TRAVEL_TIME);
+  }
+  if (name === 'player-failed-accepted') {
+    const start = (value === 0) ? -HAND_OFF : 1920 + HAND_OFF - RIGHT_HAND_SPRITE.width;
+    const middle = (value === 0) ? 0 : 1920 - RIGHT_HAND_SPRITE.width;
+    animateHand(start, middle, HAND_TRAVEL_TIME, HAND_TRAVEL_TIME, value);
   }
   if (name === 'player-failed') {
     isTaking = false;
