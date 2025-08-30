@@ -8,9 +8,14 @@ const GAME_NAMES = [
   'Light fingers'
 ];
 
+const GAME_THUMBNAILS = [
+  '../src/images/games/light-fingers/thumbnail.png'
+]
+
 //region HTML Objects
 const resultBar = document.querySelector('#game-result-menu .result-bar');
 const endResultBar = document.querySelector('#party-result-menu .result-bar');
+const nextGameImage = document.querySelector('#next-game-image');
 const nextGameName = document.querySelector('#next-game-name');
 const timerText = document.querySelector('#next-game-timer');
 const playerPoints = document.querySelector('#players-points');
@@ -87,6 +92,7 @@ function showGameResults(nextGameId) {
   // set the next game
   currentGame = nextGameId;
   nextGameName.innerText = GAME_NAMES[nextGameId];
+  nextGameImage.style.background = `url('${GAME_THUMBNAILS[nextGameId]}')`;
 
   // start the timer
   timerText.innerText = nextGameTimer;
