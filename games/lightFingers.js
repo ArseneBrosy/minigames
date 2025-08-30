@@ -1,7 +1,7 @@
 const event = require('../eventManager');
 const MIN_TIME = 3000;
 const MAX_TIME = 10000;
-const HOLD_TIME = 2000;
+const HOLD_TIME = 3000;
 const WIN_POINTS = 5;
 const ACCEPT_INPUT_TIME = 500;
 

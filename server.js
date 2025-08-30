@@ -92,11 +92,27 @@ eventBus.on('game-end', (content) => {
 
   io.to(content.room).emit('gameResult', {nextGameId: room.game, results: room.results, winner: { id: content.winner, pseudo: winner }, gameIndex: room.gameIndex});
 
-  // start the game in 5 seconds
-  setTimeout(() => {
-    io.to(content.room).emit('nextGame');
-    games.launchGame(content.room);
-  }, 7000);
+  if (room.gameIndex >= room.results.length) {
+    // find the party winner
+    let winner = 0;
+    for (let result of room.results) {
+      winner += result === 1 ? -1 : 1;
+    }
+    winner = winner < 0 ? 0 : 1;
+
+    const winnerPseudo = room.players[winner].pseudo;
+    const looserPseudo = room.players[1 - winner].pseudo;
+    const winnerPicture = room.players[winner].picture;
+    const looserPicture = room.players[1 - winner].picture;
+
+    io.to(content.room).emit('end-party', { winner: winner, winnerPseudo: winnerPseudo, looserPseudo: looserPseudo, winnerPicture: winnerPicture, looserPicture: looserPicture });
+  } else {
+    // start the game in 5 seconds
+    setTimeout(() => {
+      io.to(content.room).emit('nextGame');
+      games.launchGame(content.room);
+    }, 7000);
+  }
 });
 
 server.listen(3000, () => {
