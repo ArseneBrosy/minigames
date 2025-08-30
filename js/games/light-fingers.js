@@ -8,6 +8,7 @@ const LIGHT_SWING = 10;
 const LIGHT_SWING_SPEED = 0.01;
 const HAND_OFF = 520;
 const HANDS_HEIGHT = 390;
+const HAND_TRAVEL_TIME = 200;
 
 const TABLE_SPRITE = new Image();
 TABLE_SPRITE.src = './src/images/games/light-fingers/table.png';
@@ -27,6 +28,7 @@ let points = [0, 0];
 let lightSwing = 0;
 let leftHandX = -HAND_OFF;
 let rightHandX = 1920 + HAND_OFF - RIGHT_HAND_SPRITE.width;
+let isTaking = false;
 
 function gameEvent(name, value) {
   console.log('game event :', name, value);
@@ -40,19 +42,15 @@ function gameEvent(name, value) {
     buzzerOn = false;
 
     // animate hand
-    if (value === 0) {
-      const start = -HAND_OFF;
-      const middle = 0;
-      animateValueBackAndForth(start, middle, 200, 200, (v) => {
-        leftHandX = v;
-      });
-    } else {
-      const start = 1920 + HAND_OFF - RIGHT_HAND_SPRITE.width;
-      const middle = 1920 - RIGHT_HAND_SPRITE.width;
-      animateValueBackAndForth(start, middle, 200, 200, (v) => {
-        rightHandX = v;
-      });
-    }
+    const start = (value === 0) ? -HAND_OFF : 1920 + HAND_OFF - RIGHT_HAND_SPRITE.width;
+    const middle = (value === 0) ? 0 : 1920 - RIGHT_HAND_SPRITE.width;
+    animateHand(start, middle, HAND_TRAVEL_TIME, HAND_TRAVEL_TIME, value);
+  }
+  if (name === 'player-failed') {
+    isTaking = false;
+    const start = (value.player === 0) ? -HAND_OFF : 1920 + HAND_OFF - RIGHT_HAND_SPRITE.width;
+    const middle = (value.player === 0) ? 0 : 1920 - RIGHT_HAND_SPRITE.width;
+    animateHand(start, middle, HAND_TRAVEL_TIME, value.time - HAND_TRAVEL_TIME, value.player);
   }
 }
 
@@ -113,9 +111,22 @@ function drawFrame() {
   setPoints(points);
 }
 
+function animateHand(start, middle, forward, backward, player) {
+  animateValueBackAndForth(start, middle, forward, backward, (v) => {
+    if (player === 0) {
+      leftHandX = v;
+    } else {
+      rightHandX = v;
+    }
+  }, () => {
+    isTaking = false;
+  });
+}
+
 document.addEventListener('keydown', (e) => {
-  if (e.key === ' ') {
+  if (e.key === ' ' && !isTaking) {
     sendInput(null);
+    isTaking = true;
   }
 });
 
