@@ -1,10 +1,13 @@
 import { sendInput, setPoints, ctx } from "../games.js";
+import { animateValueBackAndForth } from "../animations.js";
 
 const GLASS_SPEED = 20;
 const GLASS_ON_Y = 390;
 const LIGHT_ANGLE = 30;
 const LIGHT_SWING = 10;
 const LIGHT_SWING_SPEED = 0.01;
+const HAND_OFF = 520;
+const HANDS_HEIGHT = 390;
 
 const TABLE_SPRITE = new Image();
 TABLE_SPRITE.src = './src/images/games/light-fingers/table.png';
@@ -12,12 +15,18 @@ const GLASS_SPRITE = new Image();
 GLASS_SPRITE.src = './src/images/games/light-fingers/glass.png';
 const LIGHT_SPRITE = new Image();
 LIGHT_SPRITE.src = './src/images/games/light-fingers/light.png';
+const LEFT_HAND_SPRITE = new Image();
+LEFT_HAND_SPRITE.src = './src/images/games/light-fingers/left-hand.png';
+const RIGHT_HAND_SPRITE = new Image();
+RIGHT_HAND_SPRITE.src = './src/images/games/light-fingers/right-hand.png';
 
 let buzzerOn = false;
 let glassY = GLASS_ON_Y;
 let glassDirection = 0;
 let points = [0, 0];
 let lightSwing = 0;
+let leftHandX = -HAND_OFF;
+let rightHandX = 1920 + HAND_OFF - RIGHT_HAND_SPRITE.width;
 
 function gameEvent(name, value) {
   console.log('game event :', name, value);
@@ -26,9 +35,24 @@ function gameEvent(name, value) {
     glassDirection = -1;
   }
   if (name === 'player-point') {
-    buzzerOn = false;
     points[value]++;
     glassDirection = 1;
+    buzzerOn = false;
+
+    // animate hand
+    if (value === 0) {
+      const start = -HAND_OFF;
+      const middle = 0;
+      animateValueBackAndForth(start, middle, 200, 200, (v) => {
+        leftHandX = v;
+      });
+    } else {
+      const start = 1920 + HAND_OFF - RIGHT_HAND_SPRITE.width;
+      const middle = 1920 - RIGHT_HAND_SPRITE.width;
+      animateValueBackAndForth(start, middle, 200, 200, (v) => {
+        rightHandX = v;
+      });
+    }
   }
 }
 
@@ -42,6 +66,13 @@ function drawFrame() {
   ctx.fillRect(0, 0, 1920, 1080);
   ctx.drawImage(TABLE_SPRITE, 1920 / 2 - TABLE_SPRITE.width / 2, 1080 - TABLE_SPRITE.height);
   ctx.drawImage(GLASS_SPRITE, 1920 / 2 - GLASS_SPRITE.width / 2, glassY);
+
+  // left hand
+  ctx.drawImage(LEFT_HAND_SPRITE, leftHandX, HANDS_HEIGHT);
+
+  // left hand
+  ctx.drawImage(RIGHT_HAND_SPRITE, rightHandX, HANDS_HEIGHT);
+
   // lights
   if (!buzzerOn) {
     const x1 = 1920 / 4;
