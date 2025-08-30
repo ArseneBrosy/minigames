@@ -43,7 +43,6 @@ let diamondSize = 1;
 //endregion
 
 function gameEvent(name, value) {
-  console.log('game event :', name, value);
   if (name === 'buzzer-on') {
     buzzerOn = true;
     glassDirection = -1;
@@ -96,7 +95,16 @@ function gameEvent(name, value) {
 
 function startGame() {
   buzzerOn = false;
+  glassY = GLASS_ON_Y;
+  glassDirection = 0;
   points = [0, 0];
+  lightSwing = 0;
+  leftHandX = -HAND_OFF;
+  rightHandX = 1920 + HAND_OFF - RIGHT_HAND_SPRITE.width;
+  isTaking = false;
+  diamondX = 1920 / 2 - DIAMOND_SPRITE.width / 2;
+  diamondTaken = false;
+  diamondSize = 1;
 }
 
 function drawFrame() {

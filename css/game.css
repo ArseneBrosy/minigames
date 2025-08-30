@@ -219,3 +219,31 @@
     font-size: 4rem;
     opacity: .8;
 }
+
+#party-result-menu .cards-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1.2;
+}
+
+#party-result-menu .cards-container > div {
+    border: 10px solid;
+    background-color: white;
+    border-radius: 15px;
+    width: 70%;
+    position: absolute;
+    padding: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: rgba(0, 0, 0, 0.25) 0 0 30px 10px;
+}
+
+#party-result-menu .cards-container > div:nth-child(2) {
+    right: 0;
+    transform: translate(12.5%, -50%) scale(.75);
+    z-index: -1;
+}
+
+#party-result-menu .cards-container .pseudo {
+    font-size: 2rem;
+}

@@ -24,11 +24,13 @@ socket.on('roomFull', ({ players }) => {
 
 socket.on('gameResult', ({ nextGameId, results, winner, gameIndex }) => {
   if (gameIndex > 0) {
-    games.endGame(winner);
+    games.endGame(winner, results);
   }
-  setTimeout(() => {
-    games.showGameResults(results, nextGameId);
-  }, gameIndex > 0 ? 2000 : 0);
+  if (gameIndex < results.length) {
+    setTimeout(() => {
+      games.showGameResults(nextGameId);
+    }, gameIndex > 0 ? 2000 : 0);
+  }
 });
 
 socket.on('game-event', ({ name, value }) => {
@@ -37,6 +39,10 @@ socket.on('game-event', ({ name, value }) => {
 
 socket.on('nextGame', () => {
   games.startNextGame();
+});
+
+socket.on('end-party', ({ winner, winnerPseudo, looserPseudo, winnerPicture, looserPicture }) => {
+  games.endParty(winner, { profile: winnerPicture, pseudo : winnerPseudo }, { profile: looserPicture, pseudo : looserPseudo });
 });
 
 document.addEventListener('player-input', (e) => {

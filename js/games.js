@@ -9,11 +9,18 @@ const GAME_NAMES = [
 ];
 
 //region HTML Objects
-const resultBar = document.querySelector('.result-bar');
+const resultBar = document.querySelector('#game-result-menu .result-bar');
+const endResultBar = document.querySelector('#party-result-menu .result-bar');
 const nextGameName = document.querySelector('#next-game-name');
 const timerText = document.querySelector('#next-game-timer');
 const playerPoints = document.querySelector('#players-points');
 const endGameScreen = document.querySelector('#end-game-screen');
+const winnerCard = document.querySelector('#party-result-menu .cards-container > div:nth-child(1)');
+const looserCard = document.querySelector('#party-result-menu .cards-container > div:nth-child(2)');
+const winnerPseudo = document.querySelector('#party-result-menu .cards-container > div:nth-child(1) .pseudo');
+const looserPseudo = document.querySelector('#party-result-menu .cards-container > div:nth-child(2) .pseudo');
+const winnerProfile = document.querySelector('#party-result-menu .cards-container > div:nth-child(1) .profile-picture');
+const looserProfile = document.querySelector('#party-result-menu .cards-container > div:nth-child(2) .profile-picture');
 const canvas = document.querySelector('#game');
 const ctx = canvas.getContext('2d');
 //endregion
@@ -31,31 +38,51 @@ canvas.height = 1080;
 /**
  * Show the end screen
  * @param winner the name of the player who won the game
- */
-function endGame(winner) {
-  endGameScreen.style.display = 'flex';
-  endGameScreen.innerHTML = `<p>${winner.pseudo} gagne</p>`;
-  endGameScreen.style.backgroundColor = winner.id === 0 ? '#bd1f1f' : '#1063ff';
-  clearInterval(gameLoop);
-}
-
-/**
- * Show the last game result
  * @param results the result of the party
- * @param nextGameId the next game's id
  */
-function showGameResults(results, nextGameId) {
-  // reset the end game screen
-  endGameScreen.style.display = 'none';
-  endGameScreen.innerHTML = `<p></p>`;
-  endGameScreen.style.backgroundColor = 'unset';
-
+function endGame(winner, results) {
   // set the results
   let resultsHTML = '';
   for (let result of results) {
     resultsHTML += `<div class="res${result}"></div>`
   }
   resultBar.innerHTML = resultsHTML;
+  endResultBar.innerHTML = resultsHTML;
+
+  setTimeout(() => {
+    endGameScreen.style.display = 'flex';
+    endGameScreen.innerHTML = `<p>${winner.pseudo} gagne</p>`;
+    endGameScreen.style.backgroundColor = winner.id === 0 ? '#bd1f1f' : '#1063ff';
+    clearInterval(gameLoop);
+  }, 500);
+}
+
+function endParty(winnerId, winner, looser) {
+  // set the cards
+  winnerCard.style.borderColor = winnerId === 0 ? '#bd1f1f' : '#1063ff';
+  looserCard.style.borderColor = winnerId === 1 ? '#bd1f1f' : '#1063ff';
+  winnerPseudo.innerText = winner.pseudo;
+  looserPseudo.innerText = looser.pseudo;
+  winnerProfile.style.background = `url('../src/images/profile${winner.profile}.png')`;
+  looserProfile.style.background = `url('../src/images/profile${looser.profile}.png')`;
+
+  setTimeout(() => {
+    endGameScreen.style.display = 'none';
+    endGameScreen.innerHTML = `<p></p>`;
+    endGameScreen.style.backgroundColor = 'unset';
+    openMenu('party-result-menu', true);
+  }, 2000);
+}
+
+/**
+ * Show the last game result
+ * @param nextGameId the next game's id
+ */
+function showGameResults(nextGameId) {
+  // reset the end game screen
+  endGameScreen.style.display = 'none';
+  endGameScreen.innerHTML = `<p></p>`;
+  endGameScreen.style.backgroundColor = 'unset';
 
   // set the next game
   currentGame = nextGameId;
@@ -116,4 +143,4 @@ function setPoints(points) {
   <p>${points[1]}</p>`;
 }
 
-export { showGameResults, startNextGame, endGame, gameEvent, sendInput, setPoints, ctx };
+export { showGameResults, startNextGame, endGame, endParty, gameEvent, sendInput, setPoints, ctx };
